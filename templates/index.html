@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Heart Disease Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 30px;
+            max-width: 500px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        h3 {
+            text-align: center;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h2>Heart Disease Prediction</h2>
+
+    <form method="POST" action="/predict">
+        <label>Age</label>
+        <input type="text" name="age" required>
+
+        <label>Sex</label>
+        <select name="sex" required>
+            <option value="1">Male</option>
+            <option value="0">Female</option>
+        </select>
+
+        <label>Chest Pain Type</label>
+        <select name="cp" required>
+            <option value="0">Typical Angina</option>
+            <option value="1">Atypical Angina</option>
+            <option value="2">Non-anginal Pain</option>
+            <option value="3">Asymptomatic</option>
+        </select>
+
+        <label>Resting Blood Pressure</label>
+        <input type="text" name="trestbps" required>
+
+        <label>Cholesterol</label>
+        <input type="text" name="chol" required>
+
+        <label>Fasting Blood Sugar > 120 mg/dl</label>
+        <select name="fbs" required>
+            <option value="1">True</option>
+            <option value="0">False</option>
+        </select>
+
+        <label>Resting ECG Results</label>
+        <select name="restecg" required>
+            <option value="0">Normal</option>
+            <option value="1">ST-T Wave Abnormality</option>
+            <option value="2">Left Ventricular Hypertrophy</option>
+        </select>
+
+        <label>Max Heart Rate Achieved</label>
+        <input type="text" name="thalach" required>
+
+        <label>Exercise Induced Angina</label>
+        <select name="exang" required>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select>
+
+        <label>ST Depression Induced by Exercise</label>
+        <input type="text" name="oldpeak" required>
+
+        <label>Slope of ST Segment</label>
+        <select name="slope" required>
+            <option value="0">Upsloping</option>
+            <option value="1">Flat</option>
+            <option value="2">Downsloping</option>
+        </select>
+
+        <label>Major Vessels Colored by Fluoroscopy</label>
+        <select name="ca" required>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+
+        <label>Thalassemia</label>
+        <select name="thal" required>
+            <option value="1">Normal</option>
+            <option value="2">Fixed Defect</option>
+            <option value="3">Reversible Defect</option>
+        </select>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if prediction %}
+        <h3>Prediction: {{ prediction }}</h3>
+    {% endif %}
+</body>
+</html>
