@@ -1,141 +1,276 @@
 <!DOCTYPE html>
-<html>
+<html lang="si">
 <head>
-    <title>Heart Disease Predictor</title>
+    <meta charset="UTF-8">
+    <title>හෘද රෝග අනාවැකිය</title>
     <style>
         body {
+            margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
-            background-color: #f1f1f1;
-            padding: 20px;
+            background: url('/static/bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
         }
 
-        h2 {
+        .container {
+            padding: 40px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        h1 {
             text-align: center;
-            color: #333;
+            margin-bottom: 30px;
+            font-size: 40px;
         }
 
         form {
-            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            background-color: rgba(0, 0, 0, 0.6);
             padding: 30px;
-            max-width: 500px;
-            margin: auto;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
         }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
+        .form-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .form-row img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .form-row label {
+            width: 250px;
             font-weight: bold;
         }
 
-        input[type="text"], select {
-            width: 100%;
+        .form-row input,
+        .form-row select {
+            flex: 1;
             padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
             border-radius: 5px;
-        }
-
-        input[type="submit"] {
-            background-color: #28a745;
-            color: white;
-            padding: 12px 20px;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
             font-size: 16px;
         }
 
-        input[type="submit"]:hover {
-            background-color: #218838;
+        .btn {
+            background-color: #ff4b5c;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
         }
 
-        h3 {
+        .btn:hover {
+            background-color: #ff1e35;
+        }
+
+        /* Heartbeat animation */
+        .heartbeat {
+            width: 60px;
+            height: 60px;
+            background: url('/static/heart.png') no-repeat center center;
+            background-size: contain;
+            animation: beat 1s infinite;
+            margin: auto;
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* Popup */
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .popup-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
             text-align: center;
-            color: #007bff;
+            color: black;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .popup-content img {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+
+        .popup-content button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
         }
     </style>
 </head>
 <body>
-    <h2>Heart Disease Prediction</h2>
+    <div class="container">
+        <div class="heartbeat"></div>
+        <h1>හෘද රෝග අනාවැකිය</h1>
 
-    <form method="POST" action="/predict">
-        <label>Age</label>
-        <input type="text" name="age" required>
+        <form method="POST" action="/predict">
+            <div class="form-row">
+                <img src="/static/icons/age.png" alt="වයස">
+                <label>වයස (Age)</label>
+                <input type="text" name="age" placeholder="අයහපත් වයස ඇතුළත් කරන්න" required>
+            </div>
 
-        <label>Sex</label>
-        <select name="sex" required>
-            <option value="1">Male</option>
-            <option value="0">Female</option>
-        </select>
+            <div class="form-row">
+                <img src="/static/icons/gender.png" alt="ස්ත්‍රී පුරුෂ භාවය">
+                <label>ස්ත්‍රී/පුරුෂ භාවය (Sex)</label>
+                <select name="sex" required>
+                    <option value="1">පුරුෂ</option>
+                    <option value="0">ස්ත්‍රී</option>
+                </select>
+            </div>
 
-        <label>Chest Pain Type</label>
-        <select name="cp" required>
-            <option value="0">Typical Angina</option>
-            <option value="1">Atypical Angina</option>
-            <option value="2">Non-anginal Pain</option>
-            <option value="3">Asymptomatic</option>
-        </select>
+            <div class="form-row">
+                <img src="/static/icons/chest-pain.png" alt="උරහිස් වේදනා">
+                <label>උරහිස් වේදනා වර්ගය (Chest Pain Type)</label>
+                <select name="cp" required>
+                    <option value="0">සාම්ප්‍රදායික ඇන්ජිනා</option>
+                    <option value="1">අසාම්ප්‍රදායික ඇන්ජිනා</option>
+                    <option value="2">අසත්‍ය වේදනා</option>
+                    <option value="3">රෝග ලක්ෂණ නොමැත</option>
+                </select>
+            </div>
 
-        <label>Resting Blood Pressure</label>
-        <input type="text" name="trestbps" required>
+            <div class="form-row">
+                <img src="/static/icons/blood-pressure.png" alt="රැඳුනු රුධිර පීඩනය">
+                <label>රැඳුනු රුධිර පීඩනය (Resting BP)</label>
+                <input type="text" name="trestbps" placeholder="මිලිමීටර් පීඩනය" required>
+            </div>
 
-        <label>Cholesterol</label>
-        <input type="text" name="chol" required>
+            <div class="form-row">
+                <img src="/static/icons/cholesterol.png" alt="කොලෙස්ටරෝල්">
+                <label>කොලෙස්ටරෝල් මට්ටම (Cholesterol)</label>
+                <input type="text" name="chol" placeholder="මිලිග්‍රෑම්/ඩීඑල්" required>
+            </div>
 
-        <label>Fasting Blood Sugar > 120 mg/dl</label>
-        <select name="fbs" required>
-            <option value="1">True</option>
-            <option value="0">False</option>
-        </select>
+            <div class="form-row">
+                <img src="/static/icons/sugar.png" alt="උණුසුම් රුධිරය">
+                <label>උණුසුම් රුධිර සීනි > 120 (Fasting Sugar >120)</label>
+                <select name="fbs" required>
+                    <option value="1">ඔව්</option>
+                    <option value="0">නැත</option>
+                </select>
+            </div>
 
-        <label>Resting ECG Results</label>
-        <select name="restecg" required>
-            <option value="0">Normal</option>
-            <option value="1">ST-T Wave Abnormality</option>
-            <option value="2">Left Ventricular Hypertrophy</option>
-        </select>
+            <div class="form-row">
+                <img src="/static/icons/ecg.png" alt="ECG ප්‍රතිඵල">
+                <label>ECG ප්‍රතිඵල (Resting ECG)</label>
+                <select name="restecg" required>
+                    <option value="0">සාමාන්‍ය</option>
+                    <option value="1">ST-T තරංග විකෘතිය</option>
+                    <option value="2">වම් වක්ෂ පේශි වර්ධනය</option>
+                </select>
+            </div>
 
-        <label>Max Heart Rate Achieved</label>
-        <input type="text" name="thalach" required>
+            <div class="form-row">
+                <img src="/static/icons/heart-rate.png" alt="උපරිම හෘද සීමා">
+                <label>උපරිම හෘද සීමා (Max Heart Rate)</label>
+                <input type="text" name="thalach" placeholder="මිනිත්තුකට හෘද ගතිය" required>
+            </div>
 
-        <label>Exercise Induced Angina</label>
-        <select name="exang" required>
-            <option value="1">Yes</option>
-            <option value="0">No</option>
-        </select>
+            <div class="form-row">
+                <img src="/static/icons/angina.png" alt="උපරිම ඇන්ජිනා">
+                <label>වයාම හේතුවෙන් ඇන්ජිනා (Exercise Angina)</label>
+                <select name="exang" required>
+                    <option value="1">ඔව්</option>
+                    <option value="0">නැත</option>
+                </select>
+            </div>
 
-        <label>ST Depression Induced by Exercise</label>
-        <input type="text" name="oldpeak" required>
+            <div class="form-row">
+                <img src="/static/icons/st-depression.png" alt="ST ඩිප්‍රෙෂන්">
+                <label>වයාම හේතුවෙන් ST ඩිප්‍රෙෂන් (ST Depression)</label>
+                <input type="text" name="oldpeak" placeholder="මිටර්" required>
+            </div>
 
-        <label>Slope of ST Segment</label>
-        <select name="slope" required>
-            <option value="0">Upsloping</option>
-            <option value="1">Flat</option>
-            <option value="2">Downsloping</option>
-        </select>
+            <div class="form-row">
+                <img src="/static/icons/slope.png" alt="ST වක්‍රතාව">
+                <label>ST වක්‍රතාව (Slope)</label>
+                <select name="slope" required>
+                    <option value="0">උපරිස</option>
+                    <option value="1">සමාන</option>
+                    <option value="2">අවප්‍රස</option>
+                </select>
+            </div>
 
-        <label>Major Vessels Colored by Fluoroscopy</label>
-        <select name="ca" required>
-            <option value="0">0</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-        </select>
+            <div class="form-row">
+                <img src="/static/icons/vessels.png" alt="ප්‍රධාන රුධිර නාළිකා">
+                <label>ප්‍රධාන රුධිර නාළිකා (Major Vessels)</label>
+                <select name="ca" required>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
 
-        <label>Thalassemia</label>
-        <select name="thal" required>
-            <option value="1">Normal</option>
-            <option value="2">Fixed Defect</option>
-            <option value="3">Reversible Defect</option>
-        </select>
+            <div class="form-row">
+                <img src="/static/icons/thal.png" alt="තලස්සීමියා">
+                <label>තලස්සීමියා (Thalassemia)</label>
+                <select name="thal" required>
+                    <option value="1">සාමාන්‍ය</option>
+                    <option value="2">ස්ථාවර දෝෂයක්</option>
+                    <option value="3">ප්‍රතිචලිත දෝෂයක්</option>
+                </select>
+            </div>
 
-        <input type="submit" value="Predict">
-    </form>
+            <button class="btn" type="submit">අනාවැකි කරන්න</button>
+        </form>
+    </div>
 
+    <!-- Popup -->
+    <div class="popup" id="resultPopup">
+        <div class="popup-content">
+            <img src="/static/icons/result.png" alt="ප්‍රතිඵල">
+            <h2>{{ prediction }}</h2>
+            <button onclick="closePopup()">හරි</button>
+        </div>
+    </div>
+
+    <!-- සෙවුම් විප්ලවය හා ශබ්දය -->
     {% if prediction %}
-        <h3>Prediction: {{ prediction }}</h3>
+    <audio autoplay>
+        <source src="/static/success.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        document.getElementById('resultPopup').style.display = 'flex';
+        function closePopup() {
+            document.getElementById('resultPopup').style.display = 'none';
+        }
+    </script>
     {% endif %}
 </body>
 </html>

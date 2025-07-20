@@ -1,7 +1,5 @@
-# app.py
-
 from flask import Flask, render_template, request
-from model import predict_heart_disease
+from model import predict_heart_disease  # make sure this function accepts list input and returns 0 or 1
 
 app = Flask(__name__)
 
@@ -12,27 +10,34 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        # Get values from the form as floats
+        # Collect input from form, convert to proper types
         input_features = [
-            float(request.form['age']),
-            float(request.form['sex']),
-            float(request.form['cp']),
-            float(request.form['trestbps']),
-            float(request.form['chol']),
-            float(request.form['fbs']),
-            float(request.form['restecg']),
-            float(request.form['thalach']),
-            float(request.form['exang']),
+            int(request.form['age']),
+            int(request.form['sex']),
+            int(request.form['cp']),
+            int(request.form['trestbps']),
+            int(request.form['chol']),
+            int(request.form['fbs']),
+            int(request.form['restecg']),
+            int(request.form['thalach']),
+            int(request.form['exang']),
             float(request.form['oldpeak']),
-            float(request.form['slope']),
-            float(request.form['ca']),
-            float(request.form['thal'])
+            int(request.form['slope']),
+            int(request.form['ca']),
+            int(request.form['thal'])
         ]
-    except ValueError:
-        return render_template('index.html', prediction="Please enter valid numbers.")
+    except (ValueError, KeyError):
+        # If any input missing or wrong type
+        return render_template('index.html', prediction="Please enter valid inputs for all fields.")
 
-    prediction = predict_heart_disease(input_features)
-    result_text = "Heart Disease Detected!" if prediction == 1 else "No Heart Disease Detected."
+    try:
+        # Call your prediction function with input features list
+        prediction = predict_heart_disease(input_features)
+        # Interpret model output
+        result_text = "Heart Disease Detected!" if prediction == 1 else "No Heart Disease Detected."
+    except Exception as e:
+        # Handle any errors during prediction (log e if you want)
+        result_text = "An error occurred during prediction. Please try again."
 
     return render_template('index.html', prediction=result_text)
 
