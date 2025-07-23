@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <title>ඔබේ අනාවැකිය</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f8f8;
+            padding: 40px;
+            text-align: center;
+        }
+        .box {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 800px;
+            margin: auto;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        h2 {
+            color: red;
+        }
+        ul {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>හෘද රෝග අනාවැකිය</h1>
+        <h2>{{ prediction }}</h2>
+
+        <h3>ඔබට පහත උපදෙස් ලබා දිය හැකිය:</h3>
+        <ul>
+            {% for advice in advices %}
+                <li>{{ advice }}</li>
+            {% endfor %}
+        </ul>
+
+        <br>
+        <a href="/" style="color: blue;">නැවත පරීක්ෂා කරන්න</a>
+    </div>
+</body>
+</html>
