@@ -134,147 +134,155 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="heartbeat"></div>
-        <h1>හෘද රෝග අනාවැකිය (Heart Disease Prediction)</h1>
+<div class="container">
+    <div class="heartbeat"></div>
+    <h1>හෘද රෝග අනාවැකිය (Heart Disease Prediction)</h1>
 
-        <form method="POST" action="/predict">
-            <div class="form-row">
-                <img src="static/icons/Age.png" alt="වයස (Age)">
-                <label>වයස (Age)</label>
-                <input type="text" name="age" placeholder="වයස ඇතුළත් කරන්න (Enter your age)" required>
-            </div>
+    <form method="POST" action="/predict">
 
-            <div class="form-row">
-                <img src="static/icons/Sex.png" alt="ස්ත්‍රී පුරුෂ භාවය">
-                <label>ස්ත්‍රී/පුරුෂ භාවය (Sex)</label>
-                <select name="sex" required>
-                    <option value="1">පුරුෂ (Male)</option>
-                    <option value="0">ස්ත්‍රී (Female)</option>
-                </select>
-            </div>
-
-            <div class="form-row">
-                <img src="static/icons/Chest Pain.jpg" alt="පපුවේ වේදනා වර්ගය ">
-                <label>පපුවේ වේදනා වර්ගය (Chest Pain Type)</label>
-                <select name="cp" required>
-                    <option value="0">සාමාන්ය වේදනාව (Typical Angina)</option>
-                    <option value="1">අසාමාන්ය වේදනාව (Atypical Angina)</option>
-                    <option value="2">වේදනාව් නොවන (Non-anginal Pain)</option>
-                    <option value="3">රෝග ලක්ෂණ නොමැති (Asymptomatic)</option>
-                </select>
-            </div>
-
-            <div class="form-row">
-                <img src="static/icons/Resting.png" alt="විවේක රුධිර පීඩනය">
-                <label>විවේක රුධිර පීඩනය (Resting Blood Pressure)</label>
-                <input type="text" name="trestbps" placeholder="මිලිමීටර් පීඩනය (mm pressure)" required>
-            </div>
-
-            <div class="form-row">
-                <img src="static/icons/Cholestrol.png" alt="කොලෙස්ටරෝල්">
-                <label>කොලෙස්ටරෝල් මට්ටම (Cholesterol Level)</label>
-                <input type="text" name="chol" placeholder="මිලිග්‍රෑම්/ඩීඑල් (Milligrams of product/dl)" required>
-            </div>
-
-            <div class="form-row">
-                <img src="static/icons/Fasting Sugar.png" alt="නිරාහාර රුධිරය">
-                <label>නිරාහාර රුධිර සීනි > 120 mg/dl(Fasting Sugar)</label>
-                <select name="fbs" required>
-                    <option value="1">ඔව් (Yes)</option>
-                    <option value="0">නැත (No)</option>
-                </select>
-            </div>
-
-            <div class="form-row">
-                <img src="static/icons/Resting ECG.png" alt="ECG ප්‍රතිඵල">
-                <label>විවේක ECG ප්රතිඵල (Resting ECG Results)</label>
-                <select name="restecg" required>
-                    <option value="0">සාමාන්‍ය (Normal)</option>
-                    <option value="1">ST-T තරංග අසාමාන්‍යතාව (ST-T Wave Abnormality)</option>
-                    <option value="2">වම් කශේරුකා අධි රුධිර පීඩනය (Left Ventricular Hypertrophy)</option>
-                </select>
-            </div>
-
-            <div class="form-row">
-                <img src="static/icons/Max Hearts.png" alt="උපරිම හෘද ස්පන්දන වේගය ලබා ඇත">
-                <label>උපරිම හෘද ස්පන්දන වේගය (Max Heart Rate Achieved)</label>
-                <input type="text" name="thalach" placeholder="මිනිත්තුවට හෘද ගතිය (Heart per minute)" required>
-            </div>
-
-            <div class="form-row">
-                <img src="static/icons/Excersice Angina.jpg" alt="උපරිම වේදනාව">
-                <label>ව්‍යායාම මගින් ඇතිවන වේදනාව (Exercise Induced Angina)</label>
-                <select name="exang" required>
-                    <option value="1">ඔව්</option>
-                    <option value="0">නැත</option>
-                </select>
-            </div>
-
-            <div class="form-row">
-                <img src="static/icons/ST_depression_illustration.jpg" alt="ST ඩිප්‍රෙෂන්">
-                <label>ව්‍යායාම මගින් ඇතිවන ST අවපාතය - ECG මත (ST Depression Induced by Exercise - on ECG)</label>
-                <input type="text" name="oldpeak" placeholder="මිටර්" required>
-            </div>
-
-            <div class="form-row">
-                <img src="static/icons/stsegment.gif" alt="ST වක්‍රතාව">
-                <label>ST වක්‍රතාව (Slope of ST Segment)</label>
-                <select name="slope" required>
-                    <option value="0">උඩු බෑවුම් සහිතය (Upsloping)</option>
-                    <option value="1">පැතලි (Flat)</option>
-                    <option value="2">පහල බෑවුම (Downsloping)</option>
-                </select>
-            </div>
-
-            <div class="form-row">
-                <img src="static/icons/Vessels.png" alt="ප්‍රධාන රුධිර නාළිකා">
-                <label>ෆ්ලෝරෝස්කොපි මගින් වර්ණ ගැන්වූ ප්‍රධාන යාත්‍රා (Major Vessels Colored by Fluoroscopy)</label>
-                <select name="ca" required>
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-            </div>
-
-            <div class="form-row">
-                <img src="static/icons/Thal.png" alt="තැලසීමියාව">
-                <label>තැලසීමියාව (Thalassemia)</label>
-                <select name="thal" required>
-                    <option value="1">සාමාන්‍ය (Normal)</option>
-                    <option value="2">ස්ථාවර දෝෂය (Fixed Defect)</option>
-                    <option value="3">ආපසු හැරවිය හැකි දෝෂය (Reversible Defect)</option>
-                </select>
-            </div>
-
-            <button class="btn" type="submit">ප්‍රතිඵල ලබා ගැනීමට (To get Results)</button>
-        </form>
-    </div>
-
-    <!-- Popup -->
-    <div class="popup" id="resultPopup">
-        <div class="popup-content">
-            <img src="/static/icons/result.png" alt="ප්‍රතිඵල (Results)">
-            <h2>{{ prediction }}</h2>
-            <button onclick="closePopup()">හරි (Ok)</button>
+        <div class="form-row">
+            <img src="static/icons/User.png" alt="නම (Name)">
+            <label>නම (Name)</label>
+            <input type="text" name="name" placeholder="ඔබගේ නම ඇතුළත් කරන්න (Enter your name)" required>
         </div>
+
+
+        <div class="form-row">
+            <img src="static/icons/Age.png" alt="වයස (Age)">
+            <label>වයස (Age)</label>
+            <input type="text" name="age" placeholder="වයස ඇතුළත් කරන්න (Enter your age)" required>
+        </div>
+
+        <div class="form-row">
+            <img src="static/icons/Sex.png" alt="ස්ත්‍රී පුරුෂ භාවය">
+            <label>ස්ත්‍රී/පුරුෂ භාවය (Sex)</label>
+            <select name="sex" required>
+                <option value="1">පුරුෂ (Male)</option>
+                <option value="0">ස්ත්‍රී (Female)</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <img src="static/icons/Chest Pain.jpg" alt="පපුවේ වේදනා වර්ගය ">
+            <label>පපුවේ වේදනා වර්ගය (Chest Pain Type)</label>
+            <select name="cp" required>
+                <option value="0">සාමාන්ය වේදනාව (Typical Angina)</option>
+                <option value="1">අසාමාන්ය වේදනාව (Atypical Angina)</option>
+                <option value="2">වේදනාව් නොවන (Non-anginal Pain)</option>
+                <option value="3">රෝග ලක්ෂණ නොමැති (Asymptomatic)</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <img src="static/icons/Resting.png" alt="විවේක රුධිර පීඩනය">
+            <label>විවේක රුධිර පීඩනය (Resting Blood Pressure)</label>
+            <input type="text" name="trestbps" placeholder="මිලිමීටර් පීඩනය (mm pressure)" required>
+        </div>
+
+        <div class="form-row">
+            <img src="static/icons/Cholestrol.png" alt="කොලෙස්ටරෝල්">
+            <label>කොලෙස්ටරෝල් මට්ටම (Cholesterol Level)</label>
+            <input type="text" name="chol" placeholder="මිලිග්‍රෑම්/ඩීඑල් (Milligrams of product/dl)" required>
+        </div>
+
+        <div class="form-row">
+            <img src="static/icons/Fasting Sugar.png" alt="නිරාහාර රුධිරය">
+            <label>නිරාහාර රුධිර සීනි > 120 mg/dl(Fasting Sugar)</label>
+            <select name="fbs" required>
+                <option value="1">ඔව් (Yes)</option>
+                <option value="0">නැත (No)</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <img src="static/icons/Resting ECG.png" alt="ECG ප්‍රතිඵල">
+            <label>විවේක ECG ප්රතිඵල (Resting ECG Results)</label>
+            <select name="restecg" required>
+                <option value="0">සාමාන්‍ය (Normal)</option>
+                <option value="1">ST-T තරංග අසාමාන්‍යතාව (ST-T Wave Abnormality)</option>
+                <option value="2">වම් කශේරුකා අධි රුධිර පීඩනය (Left Ventricular Hypertrophy)</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <img src="static/icons/Max Hearts.png" alt="උපරිම හෘද ස්පන්දන වේගය ලබා ඇත">
+            <label>උපරිම හෘද ස්පන්දන වේගය (Max Heart Rate Achieved)</label>
+            <input type="text" name="thalach" placeholder="මිනිත්තුවට හෘද ගතිය (Heart per minute)" required>
+        </div>
+
+        <div class="form-row">
+            <img src="static/icons/Excersice Angina.jpg" alt="උපරිම වේදනාව">
+            <label>ව්‍යායාම මගින් ඇතිවන වේදනාව (Exercise Induced Angina)</label>
+            <select name="exang" required>
+                <option value="1">ඔව්</option>
+                <option value="0">නැත</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <img src="static/icons/ST_depression_illustration.jpg" alt="ST ඩිප්‍රෙෂන්">
+            <label>ව්‍යායාම මගින් ඇතිවන ST අවපාතය - ECG මත (ST Depression Induced by Exercise - on ECG)</label>
+            <input type="text" name="oldpeak" placeholder="මිටර්" required>
+        </div>
+
+        <div class="form-row">
+            <img src="static/icons/stsegment.gif" alt="ST වක්‍රතාව">
+            <label>ST වක්‍රතාව (Slope of ST Segment)</label>
+            <select name="slope" required>
+                <option value="0">උඩු බෑවුම් සහිතය (Upsloping)</option>
+                <option value="1">පැතලි (Flat)</option>
+                <option value="2">පහල බෑවුම (Downsloping)</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <img src="static/icons/Vessels.png" alt="ප්‍රධාන රුධිර නාළිකා">
+            <label>ෆ්ලෝරෝස්කොපි මගින් වර්ණ ගැන්වූ ප්‍රධාන යාත්‍රා (Major Vessels Colored by Fluoroscopy)</label>
+            <select name="ca" required>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <img src="static/icons/Thal.png" alt="තැලසීමියාව">
+            <label>තැලසීමියාව (Thalassemia)</label>
+            <select name="thal" required>
+                <option value="1">සාමාන්‍ය (Normal)</option>
+                <option value="2">ස්ථාවර දෝෂය (Fixed Defect)</option>
+                <option value="3">ආපසු හැරවිය හැකි දෝෂය (Reversible Defect)</option>
+            </select>
+        </div>
+
+        <button class="btn" type="submit">ප්‍රතිඵල ලබා ගැනීමට (To get Results)</button>
+    </form>
+</div>
+
+<!-- Popup -->
+<div class="popup" id="resultPopup">
+    <div class="popup-content">
+        <img src="/static/icons/result.png" alt="ප්‍රතිඵල (Results)">
+        <h2>{{ prediction }}</h2>
+        <button onclick="closePopup()">හරි (Ok)</button>
     </div>
+</div>
 
 
-    {% if prediction %}
-    <audio autoplay>
-        <source src="/static/success.mp3" type="audio/mpeg">
-    </audio>
-    <script>
-        document.getElementById('resultPopup').style.display = 'flex';
-        function closePopup() {
-            document.getElementById('resultPopup').style.display = 'none';
-        }
-    </script>
-    {% endif %}
+{% if prediction %}
 <audio autoplay>
-        <source src="/static/success.mp3" type="audio/mpeg">
-    </audio>
+    <source src="/static/success.mp3" type="audio/mpeg">
+</audio>
+<script>
+    document.getElementById('resultPopup').style.display = 'flex';
+    function closePopup() {
+        document.getElementById('resultPopup').style.display = 'none';
+    }
+</script>
+{% endif %}
+<audio autoplay>
+    <source src="/static/success.mp3" type="audio/mpeg">
+</audio>
 </body>
 </html>

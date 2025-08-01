@@ -12,6 +12,7 @@ def home():
 def predict():
     try:
         # Save name, gender, and age in session
+        session['name'] = request.form['name']
         session['gender'] = request.form['sex']
         session['age'] = request.form['age']
 
@@ -76,9 +77,11 @@ def generate_advice(data):
 
     return advice
 
+
 import fitz  # PyMuPDF
 from flask import make_response
 from datetime import datetime
+import os
 
 @app.route('/download-report')
 def download_report():
@@ -86,6 +89,7 @@ def download_report():
     if not input_data:
         return redirect(url_for('home'))
 
+    name = session.get('name', 'N/A')
     age = session.get('age', 'N/A')
     sex = int(session.get('sex', 0))
     gender = "Male" if sex == 1 else "Female"
@@ -93,48 +97,55 @@ def download_report():
     diagnosis = "Heart disease has been diagnosed."
     date_str = datetime.now().strftime("%B %d, %Y")
 
-    # Build report content
-    text = f"""
-    MEDICAL REPORT
-
-    Date: {date_str}
-
-    Patient Information:
-    Age    : {age} years
-    Gender : {gender}
-
-    Diagnosis:
-    {diagnosis}
-
-    Medical Advice:
-    """
-
-    for i, advice in enumerate(advices, 1):
-        english_only = advice.split('(')[-1].rstrip(')') if '(' in advice else advice
-        text += f"\n    {i}. {english_only}"
-
-    text += """
-
-    ---------------------------------------
-    Doctor's Signature
-    """
-
-    # Create PDF
+    # Create new PDF
     doc = fitz.open()
     page = doc.new_page()
-    rect = fitz.Rect(50, 50, 550, 800)
 
-    try:
-        page.insert_textbox(
-            rect,
-            text.strip(),
-            fontsize=12,
-            fontname="helv",  # built-in Helvetica
-            align=0  # Left align
-        )
-    except Exception as e:
-        return f"❌ PDF generation error: {e}"
+    # Insert watermark (optional)
+    image_path = os.path.join("static", "images", "watermark.png")
+    if os.path.exists(image_path):
+        try:
+            img_rect = fitz.Rect(150, 200, 450, 500)
+            page.insert_image(img_rect, filename=image_path, overlay=False, keep_proportion=True)
+        except Exception as e:
+            print(f"⚠️ Watermark insertion failed: {e}")
 
+    # Header
+    page.insert_text((50, 50), "🩺 MEDICAL REPORT", fontsize=16, fontname="helv", render_mode=3)
+    page.insert_text((400, 50), f"Date: {date_str}", fontsize=10)
+
+    # Patient Info
+    box_top = 80
+    page.draw_rect(fitz.Rect(50, box_top, 550, box_top + 60), color=(0, 0, 0), width=1)
+    page.insert_text((60, box_top + 10), f"👤 Name   : {name}", fontsize=11)
+    page.insert_text((60, box_top + 25), f"🎂 Age    : {age} years", fontsize=11)
+    page.insert_text((60, box_top + 40), f"🚻 Gender : {gender}", fontsize=11)
+
+    # Diagnosis
+    diag_top = box_top + 80
+    page.draw_rect(fitz.Rect(50, diag_top, 550, diag_top + 40), color=(0, 0, 0), width=1)
+    page.insert_text((60, diag_top + 12), f"🧪 Diagnosis: {diagnosis}", fontsize=11)
+
+    # Advice
+    advice_top = diag_top + 60
+    page.insert_text((50, advice_top), "🩺 Medical Advice:", fontsize=12, render_mode=3)
+
+    for i, advice in enumerate(advices, 1):
+        # Show only English part inside brackets
+        english_only = advice.split('(')[-1].rstrip(')') if '(' in advice else advice
+        y = advice_top + 20 + i * 16
+        page.insert_text((60, y), f"{i}. {english_only}", fontsize=10)
+
+    # Signature
+    signature_y = advice_top + 40 + len(advices) * 16
+    page.insert_text((50, signature_y), "---------------------------------------", fontsize=11)
+    page.insert_text((50, signature_y + 15), "Doctor's Signature", fontsize=10)
+
+    # Footer
+    footer_text = "📄 Created by Heart Disease Prediction Website"
+    page.insert_text((50, 800 - 30), footer_text, fontsize=9, color=(0.4, 0.4, 0.4))
+
+    # Return PDF
     pdf_bytes = doc.write()
     response = make_response(pdf_bytes)
     response.headers['Content-Type'] = 'application/pdf'
