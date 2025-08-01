@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <title>ඔබේ වාර්තාව (Your Report)</title>
+    <style>
+        @font-face {
+            font-family: 'SinhalaFont';
+            src: url("{{ url_for('static', filename='fonts/NotoSansSinhala-VariableFont_wdth,wght.ttf') }}");
+        }
+
+        body {
+            font-family: 'Noto Sans Sinhala', sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            color: red;
+            text-align: center;
+        }
+
+        ul {
+            margin-top: 20px;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>හෘද රෝග වාර්තාව (Heart Disease Report)</h1>
+    <p><strong>ප්‍රතිඵලය (Prediction):</strong> {{ prediction }}</p>
+    <h3>උපදෙස් (Advices):</h3>
+    <ul>
+        {% for advice in advices %}
+        <li>{{ advice }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

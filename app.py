@@ -11,6 +11,10 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
+        # Save name, gender, and age in session
+        session['gender'] = request.form['sex']
+        session['age'] = request.form['age']
+
         input_data = [
             int(request.form['age']),
             int(request.form['sex']),
@@ -32,7 +36,6 @@ def predict():
     prediction = predict_heart_disease(input_data)
 
     if prediction == 1:
-        # Save input data to session to use in advice page
         session['input_data'] = input_data
         return redirect(url_for('advice'))
     else:
@@ -72,6 +75,71 @@ def generate_advice(data):
         advice.append("ඔබට සාමාන්‍ය ව්‍යායාම, සයිනික් ආහාර හා වෛද්‍ය උපදෙස් ලබා ගැනීම වැදගත්ය. (It is important for you to get regular exercise, a healthy diet, and medical advice)")
 
     return advice
+
+import fitz  # PyMuPDF
+from flask import make_response
+from datetime import datetime
+
+@app.route('/download-report')
+def download_report():
+    input_data = session.get('input_data')
+    if not input_data:
+        return redirect(url_for('home'))
+
+    age = session.get('age', 'N/A')
+    sex = int(session.get('sex', 0))
+    gender = "Male" if sex == 1 else "Female"
+    advices = generate_advice(input_data)
+    diagnosis = "Heart disease has been diagnosed."
+    date_str = datetime.now().strftime("%B %d, %Y")
+
+    # Build report content
+    text = f"""
+    MEDICAL REPORT
+
+    Date: {date_str}
+
+    Patient Information:
+    Age    : {age} years
+    Gender : {gender}
+
+    Diagnosis:
+    {diagnosis}
+
+    Medical Advice:
+    """
+
+    for i, advice in enumerate(advices, 1):
+        english_only = advice.split('(')[-1].rstrip(')') if '(' in advice else advice
+        text += f"\n    {i}. {english_only}"
+
+    text += """
+
+    ---------------------------------------
+    Doctor's Signature
+    """
+
+    # Create PDF
+    doc = fitz.open()
+    page = doc.new_page()
+    rect = fitz.Rect(50, 50, 550, 800)
+
+    try:
+        page.insert_textbox(
+            rect,
+            text.strip(),
+            fontsize=12,
+            fontname="helv",  # built-in Helvetica
+            align=0  # Left align
+        )
+    except Exception as e:
+        return f"❌ PDF generation error: {e}"
+
+    pdf_bytes = doc.write()
+    response = make_response(pdf_bytes)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'attachment; filename=doctor_report.pdf'
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True)
