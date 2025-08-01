@@ -2,7 +2,7 @@
 <html lang="si">
 <head>
     <meta charset="UTF-8">
-    <title>ඔබේ අනාවැකිය</title>
+    <title>ඔබේ ප්රතිඵලය (Your Result)</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -28,10 +28,10 @@
 </head>
 <body>
     <div class="box">
-        <h1>හෘද රෝග අනාවැකිය</h1>
+        <h1>හෘද රෝග අනාවැකිය (Heart Prediction)</h1>
         <h2>{{ prediction }}</h2>
 
-        <h3>ඔබට පහත උපදෙස් ලබා දිය හැකිය:</h3>
+        <h3>ඔබට පහත උපදෙස් ලබා දිය හැකිය (You can give the following advices): </h3>
         <ul>
             {% for advice in advices %}
                 <li>{{ advice }}</li>
@@ -39,7 +39,7 @@
         </ul>
 
         <br>
-        <a href="/" style="color: blue;">නැවත පරීක්ෂා කරන්න</a>
+        <a href="/" style="color: blue;">නැවත පරීක්ෂා කරන්න (Check again)</a>
     </div>
 </body>
 </html>
